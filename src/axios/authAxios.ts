@@ -5,7 +5,8 @@ import {
   ReturnErrorMessage,
 } from "../interfaces/axiosInterface/authAxiosInterface";
 
-const API_URL = `${import.meta.env.API_URL}` || `http://localhost:8001`;
+const API_URL =
+  `${import.meta.env.VITE_APP_API_URL}/auth` || `http://localhost:8001/auth`;
 const errorResponse = (errorMessage: string): ReturnErrorMessage => ({
   status: "error",
   message: errorMessage,
@@ -17,7 +18,10 @@ export const signUpUser = async (
   formData: SignupFormData
 ): Promise<ApiResponse | undefined> => {
   try {
-    const response = await axios.post<ApiResponse>(API_URL, formData);
+    const response = await axios.post<ApiResponse>(
+      `${API_URL}/signup`,
+      formData
+    );
     return response.data;
   } catch (error) {
     if (error instanceof Error) {

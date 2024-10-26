@@ -2,10 +2,18 @@ import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import SignupPic from "../../assets/signup.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "./authPage.css";
-import { SignupFormData } from "../../interfaces/formsInterface/signUpFormsInterface";
+
 import { signUpUser } from "../../axios/authAxios";
 import { useState } from "react";
 import { toast } from "react-toastify";
+
+type SignupFormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: number;
+  password: string;
+};
 
 const SignUpPage = () => {
   const {
@@ -21,6 +29,12 @@ const SignUpPage = () => {
       return toast.error("Passwords do not match.");
     }
     const result = await signUpUser(data);
+    console.log(result);
+    if (result?.status === "error") {
+      toast.error(result.message);
+      return;
+    }
+    toast.success(result?.message);
   };
   return (
     <>
