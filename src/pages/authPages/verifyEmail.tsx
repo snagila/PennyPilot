@@ -1,11 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Container, Image, Row, Spinner } from "react-bootstrap";
 import { MdVerifiedUser } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { verifyUser } from "../../axios/authAxios";
+import { toast } from "react-toastify";
+import { BiSolidError } from "react-icons/bi";
 
 const VerifyEmail = () => {
   const [emailVerifying, setEmailVerifying] = useState<boolean>(false);
-  const [emailVerified, setEmailVerified] = useState<boolean>(true);
+  const [emailVerified, setEmailVerified] = useState<boolean>(false);
+  const [verificationFailed, setVerificationFailed] = useState<boolean>(false);
+  const [params] = useSearchParams();
+  const userEmail: string | null = params?.get("e");
+  const sessionToken: string | null = params?.get("id");
+
+  const verifyUserEmail = async (): Promise<void> => {
+    setEmailVerifying(true);
+    const result = await verifyUser({ userEmail, sessionToken });
+    console.log(result);
+    if (result?.status === "error") {
+      toast.error(result?.message);
+
+      setEmailVerifying(false);
+      setVerificationFailed(true);
+      return;
+    }
+    setEmailVerifying(false);
+    setEmailVerified(true);
+  };
+
+  useEffect(() => {
+    verifyUserEmail();
+  }, [userEmail]);
   return (
     <>
       <Row className="min-vh-100 gap-1">
@@ -42,7 +68,20 @@ const VerifyEmail = () => {
                   className="text-center p-0 fst-italic pt-2 fs-4"
                   style={{ color: "whitesmoke" }}
                 >
-                  Email verified. <Link to={"/login"}>Login Now</Link>
+                  Email verified. <Link to="/">Login Now</Link>
+                </p>
+              </Row>
+            )}
+            {verificationFailed && (
+              <Row className="pt-5">
+                <div className="text-center">
+                  <BiSolidError size={100} color="white" />
+                </div>
+                <p
+                  className="text-center p-0 fst-italic pt-2 fs-4"
+                  style={{ color: "red" }}
+                >
+                  Email verification failed. Please contact admin.
                 </p>
               </Row>
             )}

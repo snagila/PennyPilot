@@ -1,12 +1,21 @@
 import axios from "axios";
 import { SignupFormData } from "../interfaces/formsInterface/signUpFormsInterface";
-import {
-  ApiResponse,
-  ReturnErrorMessage,
-} from "../interfaces/axiosInterface/authAxiosInterface";
+
+interface ApiResponse {
+  status: string;
+  message: string;
+  data?: any;
+}
+
+interface ReturnErrorMessage {
+  status: string;
+  message: string;
+  data?: any;
+}
 
 const API_URL =
   `${import.meta.env.VITE_APP_API_URL}/auth` || `http://localhost:8001/auth`;
+
 const errorResponse = (errorMessage: string): ReturnErrorMessage => ({
   status: "error",
   message: errorMessage,
@@ -30,6 +39,39 @@ export const signUpUser = async (
     } else {
       console.log("Something went wrong !!");
       return errorResponse("Something went wrong !!");
+    }
+  }
+};
+
+// verify user
+export const verifyUser = async (
+  verificationData: object
+): Promise<ApiResponse | undefined> => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/verifyuser`,
+      verificationData
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+      return errorResponse(error.message);
+    }
+  }
+};
+
+// resetPassword
+export const resetPassword = async (
+  userEmail: object
+): Promise<ApiResponse | undefined> => {
+  try {
+    const response = await axios.post(`${API_URL}/reset-password`, userEmail);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+      return errorResponse(error.message);
     }
   }
 };

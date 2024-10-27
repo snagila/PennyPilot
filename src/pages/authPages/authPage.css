@@ -2,3 +2,9 @@
   color: whitesmoke;
   opacity: 0.3;
 }
+
+@media (max-width: 768px) {
+  .noshowPic-SmallScreens {
+    display: none;
+  }
+}

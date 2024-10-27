@@ -1,6 +1,7 @@
 import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import loginPic from "../../assets/loginPic.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 
 type LoginFormData = {
   email: string;
@@ -12,18 +13,30 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>();
+  } = useForm<LoginFormData>({
+    defaultValues: {
+      email: "aa@gmail.com",
+      password: "aa",
+    },
+  });
 
-  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {};
+  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+    console.log(data);
+  };
   return (
     <>
-      <Row className="min-vh-100 gap-1">
-        <Col xs={12} md={6}>
+      <Row className="min-vh-100 gap-1" style={{ maxHeight: "100vh" }}>
+        <Col
+          xs={12}
+          md={6}
+          className="noshowPic-SmallScreens"
+          style={{ maxHeight: "100vh" }}
+        >
           <Image src={loginPic} className="img-fluid h-100" />
         </Col>
         <Col className="d-flex justify-content-center align-items-center flex-column p-4 ">
           <Container>
-            <Row className="pt-5">
+            <Row className="">
               <h2
                 className="text-center pb-0 mb-0"
                 style={{ color: "rgba(241, 174, 49, 0.717)" }}
@@ -45,7 +58,7 @@ const LoginPage = () => {
                   onSubmit={handleSubmit(onSubmit)}
                 >
                   <Form.Group className="mb-2">
-                    <Form.Label>First Name</Form.Label>
+                    <Form.Label>E-mail</Form.Label>
                     <Form.Control
                       placeholder="Enter your email "
                       type="text"
@@ -65,7 +78,7 @@ const LoginPage = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-2">
-                    <Form.Label>Last Name</Form.Label>
+                    <Form.Label>Password</Form.Label>
                     <Form.Control
                       placeholder="Enter your password"
                       type="text"
@@ -89,6 +102,36 @@ const LoginPage = () => {
                     Submit
                   </Button>
                 </Form>
+              </div>
+            </Row>
+            <Row className="pt-3 text-white">
+              <div>
+                {" "}
+                <span className="fst-italic">New to PennyPilot?</span>
+                &nbsp;
+                <Link
+                  to="/signup"
+                  className="no-linkeffect"
+                  style={{ display: "inline" }}
+                >
+                  {" "}
+                  SignUp Now
+                </Link>
+              </div>
+            </Row>
+            <Row className="pt-3 text-white">
+              <div>
+                {" "}
+                <span className="fst-italic">Forgot password ?</span>
+                &nbsp;
+                <Link
+                  to="/reset-password"
+                  className="no-linkeffect"
+                  style={{ display: "inline" }}
+                >
+                  {" "}
+                  Reset Now
+                </Link>
               </div>
             </Row>
           </Container>

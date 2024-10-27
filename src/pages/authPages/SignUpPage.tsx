@@ -1,25 +1,27 @@
-import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  Image,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import SignupPic from "../../assets/signup.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "./authPage.css";
-
 import { signUpUser } from "../../axios/authAxios";
 import { useState } from "react";
 import { toast } from "react-toastify";
-
-type SignupFormData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: number;
-  password: string;
-};
+import { SignupFormData } from "../../interfaces/formsInterface/signUpFormsInterface";
+import { Link } from "react-router-dom";
 
 const SignUpPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitting },
   } = useForm<SignupFormData>();
   const [conformPassword, setConformPassword] = useState<string>("");
 
@@ -29,11 +31,14 @@ const SignUpPage = () => {
       return toast.error("Passwords do not match.");
     }
     const result = await signUpUser(data);
-    console.log(result);
     if (result?.status === "error") {
+      reset();
+      setConformPassword("");
       toast.error(result.message);
       return;
     }
+    reset();
+    setConformPassword("");
     toast.success(result?.message);
   };
   return (
@@ -92,7 +97,7 @@ const SignUpPage = () => {
                       type="text"
                       className="bg-dark text-light border-0  custom-placeholder"
                       {...register("lastName", {
-                        required: "First Name is required",
+                        required: "Last Name is required",
                       })}
                     />
                     {errors.lastName && (
@@ -109,13 +114,11 @@ const SignUpPage = () => {
                       type="text"
                       className="bg-dark text-light border-0  custom-placeholder"
                       {...register("email", {
-                        required: "email is required",
+                        required: "Email is required",
                       })}
                     />
-                    {errors.lastName && (
-                      <div className="text-danger">
-                        {errors.lastName.message}
-                      </div>
+                    {errors.email && (
+                      <div className="text-danger">{errors?.email.message}</div>
                     )}
                   </Form.Group>
 
@@ -126,7 +129,7 @@ const SignUpPage = () => {
                       type="number"
                       className="bg-dark text-light border-0  custom-placeholder"
                       {...register("phone", {
-                        required: "First Name is required",
+                        required: "Phone is required",
                       })}
                     />
                     {errors.phone && (
@@ -140,7 +143,7 @@ const SignUpPage = () => {
                       className="bg-dark text-light border-0  custom-placeholder"
                       placeholder="Enter your password"
                       {...register("password", {
-                        required: "First Name is required",
+                        required: "Password is required",
                       })}
                     />
                     {errors.password && (
@@ -165,10 +168,21 @@ const SignUpPage = () => {
                     className="w-100"
                     type="submit"
                     variant="outline-primary"
+                    disabled={isSubmitting}
                   >
-                    Submit
+                    {isSubmitting ? <Spinner animation="border" /> : "Submit"}
                   </Button>
                 </Form>
+              </div>
+            </Row>
+            <Row className="pt-3 text-white">
+              <div>
+                <span className="fst-italic">Have an account?</span>
+                &nbsp;
+                <Link to="/" style={{ display: "inline" }}>
+                  {" "}
+                  Login Now
+                </Link>
               </div>
             </Row>
           </Container>
