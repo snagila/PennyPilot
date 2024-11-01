@@ -75,3 +75,34 @@ export const resetPassword = async (
     }
   }
 };
+
+// newPassword
+export const newPasswordReset = async (
+  resetData: object
+): Promise<ApiResponse | undefined> => {
+  try {
+    const response = await axios.post(`${API_URL}/new-Password`, resetData);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+      return errorResponse(error.message);
+    }
+  }
+};
+
+// login user
+export const loginUser = async (
+  formData: object
+): Promise<ApiResponse | undefined> => {
+  try {
+    console.log(formData);
+    const response = await axios.post(`${API_URL}/login`, formData);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+      return errorResponse(error.message);
+    }
+  }
+};

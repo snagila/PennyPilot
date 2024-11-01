@@ -15,6 +15,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { SignupFormData } from "../../interfaces/formsInterface/signUpFormsInterface";
 import { Link } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const SignUpPage = () => {
   const {
@@ -25,10 +26,15 @@ const SignUpPage = () => {
   } = useForm<SignupFormData>();
   const [conformPassword, setConformPassword] = useState<string>("");
 
-  const onSubmit: SubmitHandler<SignupFormData> = async (data) => {
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+
+  const onSubmit: SubmitHandler<SignupFormData> = async (
+    data
+  ): Promise<void> => {
     const { password } = data;
     if (password !== conformPassword) {
-      return toast.error("Passwords do not match.");
+      toast.error("Passwords do not match.");
+      return;
     }
     const result = await signUpUser(data);
     if (result?.status === "error") {
@@ -41,11 +47,21 @@ const SignUpPage = () => {
     setConformPassword("");
     toast.success(result?.message);
   };
+
   return (
     <>
       <Row className="min-vh-100 gap-1">
         <Col xs={12} md={6}>
-          <Image src={SignupPic} className="img-fluid h-100" />
+          <div style={{ width: "100%", height: "100%" }}>
+            <LazyLoadImage
+              src={SignupPic}
+              effect="blur"
+              height="100%"
+              width="100%"
+              alt="Login background"
+              placeholder={<Spinner animation="border" />}
+            />
+          </div>
         </Col>
         <Col className="d-flex justify-content-center align-items-center flex-column p-4 ">
           <Container>
@@ -56,10 +72,7 @@ const SignUpPage = () => {
               >
                 Create your Account
               </h2>
-              <p
-                className="text-center p-0 fst-italic text-primary"
-                // style={{ color: "#9966CC" }}
-              >
+              <p className="text-center p-0 fst-italic text-primary">
                 Sign up and start using PennyPilot today!
               </p>
             </Row>

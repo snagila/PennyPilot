@@ -1,18 +1,31 @@
-import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  Image,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import loginPic from "../../assets/loginPic.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { loginUser } from "../../axios/authAxios";
+import { toast } from "react-toastify";
+// import {LazyLoa}
 
 type LoginFormData = {
   email: string;
   password: string;
 };
 
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     defaultValues: {
       email: "aa@gmail.com",
@@ -20,8 +33,14 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<LoginFormData> = async (
+    formData
+  ): Promise<void> => {
+    const result = await loginUser(formData);
+    if (result?.status === "error") {
+      toast.error(result.message);
+      return;
+    }
   };
   return (
     <>
@@ -32,7 +51,31 @@ const LoginPage = () => {
           className="noshowPic-SmallScreens"
           style={{ maxHeight: "100vh" }}
         >
-          <Image src={loginPic} className="img-fluid h-100" />
+          {/* FOR LAZY LOADING */}
+          {/* https://blog.webdevsimplified.com/2023-05/lazy-load-images/ */}
+          <div style={{ width: "100%", height: "100%" }}>
+            <LazyLoadImage
+              src={loginPic}
+              effect="blur"
+              height="100%"
+              width="100%"
+              alt="Login background"
+              placeholder={
+                <img
+                  src={loginPic}
+                  alt="Placeholder"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              }
+            />
+          </div>
+
+          {/* <Image
+            src={loginPic}
+            className="img-fluid h-100"
+            // onLoad={() => setImageLoaded(true)}
+            loading="lazy"
+          /> */}
         </Col>
         <Col className="d-flex justify-content-center align-items-center flex-column p-4 ">
           <Container>
@@ -98,8 +141,9 @@ const LoginPage = () => {
                     className="w-100"
                     type="submit"
                     variant="outline-primary"
+                    disabled={isSubmitting}
                   >
-                    Submit
+                    {isSubmitting ? <Spinner animation="border" /> : "Submit"}
                   </Button>
                 </Form>
               </div>
