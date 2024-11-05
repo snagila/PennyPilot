@@ -10,8 +10,21 @@ import ForgotPassword from "./pages/authPages/ForgotPassword";
 import NewPassWordPage from "./pages/authPages/NewPassWordPage";
 import Dashboard from "./pages/dashboard/Dashboard";
 import User_Private_Route from "./components/authComponents/UserPrivateRoute";
+import { useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./redux/store";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getUserDataAction } from "./redux/userRedux/userThunk";
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { user, loading } = useSelector((state: RootState) => state.user);
+  useEffect(() => {
+    if (user) {
+      dispatch(getUserDataAction());
+    }
+  }, [dispatch]);
+
   return (
     <>
       <Routes>

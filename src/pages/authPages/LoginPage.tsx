@@ -18,7 +18,6 @@ type LoginFormData = {
 
 const LoginPage: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
-  console.log(user);
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -51,7 +50,7 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(getUserDataAction());
-    if (user) {
+    if (user?._id) {
       navigate("/user/dashboard");
     }
   }, [user]);

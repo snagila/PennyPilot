@@ -126,3 +126,21 @@ export const getUser = async (): Promise<ApiResponse | undefined> => {
     }
   }
 };
+
+export const logOutUser = async (): Promise<ApiResponse | undefined> => {
+  try {
+    const response = await axios.post(
+      `${USER_API_URL}/logout`,
+      {},
+      {
+        headers: { Authorization: sessionStorage.getItem("accessJWT") || "" },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+      return undefined;
+    }
+  }
+};

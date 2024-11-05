@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { User } from "./userTypes";
 import { getUserDataAction } from "./userThunk";
 
 interface InitialState {
-  user?: User | null;
+  user: User | null;
   loading: boolean;
-  error?: string | null;
+  error: string | null;
 }
 const initialState: InitialState = {
   user: null,
@@ -21,6 +21,11 @@ const userSlice = createSlice({
     // setUser: (state, action: PayloadAction<User | null>) => {
     //   state.user = action?.payload;
     // },
+    logout: (state) => {
+      state.user = null;
+      state.loading = false;
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -40,7 +45,7 @@ const userSlice = createSlice({
   },
 });
 
-export const {} = userSlice.actions;
+export const { logout } = userSlice.actions;
 
 // we rename in store.ts insated of renaming here
 export default userSlice.reducer;

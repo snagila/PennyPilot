@@ -2,12 +2,18 @@ body {
   color: whitesmoke;
   background: radial-gradient(
     circle,
-    rgba(44, 62, 80, 1) 0%,
+    rgba(44, 62, 80, 1) 10%,
     rgba(0, 0, 0, 1) 100%
   );
+  /* background: #efe9e3; */
 }
 
 .no-linkeffect {
   /* text-decoration: none; */
   display: inline;
+}
+
+.form-control.custom-placeholder::placeholder {
+  color: #b0b0b0;
+  opacity: 1;
 }
