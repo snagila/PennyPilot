@@ -1,20 +1,15 @@
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  Image,
-  Row,
-  Spinner,
-} from "react-bootstrap";
+import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import loginPic from "../../assets/loginPic.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useDispatch } from "react-redux";
 import { loginUser } from "../../axios/authAxios";
 import { toast } from "react-toastify";
-// import {LazyLoa}
+import { AppDispatch, RootState } from "../../redux/store";
+import { getUserDataAction } from "../../redux/userRedux/userThunk";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 type LoginFormData = {
   email: string;
@@ -22,6 +17,11 @@ type LoginFormData = {
 };
 
 const LoginPage: React.FC = () => {
+  const { user } = useSelector((state: RootState) => state.user);
+  console.log(user);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -37,11 +37,24 @@ const LoginPage: React.FC = () => {
     formData
   ): Promise<void> => {
     const result = await loginUser(formData);
+
     if (result?.status === "error") {
-      toast.error(result.message);
+      toast.error(result?.message);
       return;
     }
+    if (result?.status === "success") {
+      sessionStorage.setItem("accessJWT", result.data.accessJWT);
+      localStorage.setItem("refreshJWT", result.data.refreshJWT);
+      dispatch(getUserDataAction());
+    }
   };
+
+  useEffect(() => {
+    dispatch(getUserDataAction());
+    if (user) {
+      navigate("/user/dashboard");
+    }
+  }, [user]);
   return (
     <>
       <Row className="min-vh-100 gap-1" style={{ maxHeight: "100vh" }}>

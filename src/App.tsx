@@ -8,6 +8,9 @@ import VerifyEmail from "./pages/authPages/verifyEmail";
 import LoginPage from "./pages/authPages/LoginPage";
 import ForgotPassword from "./pages/authPages/ForgotPassword";
 import NewPassWordPage from "./pages/authPages/NewPassWordPage";
+import Dashboard from "./pages/dashboard/Dashboard";
+import User_Private_Route from "./components/authComponents/UserPrivateRoute";
+
 function App() {
   return (
     <>
@@ -20,7 +23,9 @@ function App() {
         <Route path="/new-Password" element={<NewPassWordPage />} />
 
         {/* PRIVATE ROUTES */}
-        <Route></Route>
+        <Route path="/user" element={<User_Private_Route />}>
+          <Route path="dashboard" element={<Dashboard />} />
+        </Route>
       </Routes>
       <ToastContainer />
     </>

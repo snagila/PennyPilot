@@ -13,7 +13,7 @@ interface ReturnErrorMessage {
   data?: any;
 }
 
-const API_URL =
+const USER_API_URL =
   `${import.meta.env.VITE_APP_API_URL}/auth` || `http://localhost:8001/auth`;
 
 const errorResponse = (errorMessage: string): ReturnErrorMessage => ({
@@ -28,7 +28,7 @@ export const signUpUser = async (
 ): Promise<ApiResponse | undefined> => {
   try {
     const response = await axios.post<ApiResponse>(
-      `${API_URL}/signup`,
+      `${USER_API_URL}/signup`,
       formData
     );
     return response.data;
@@ -49,7 +49,7 @@ export const verifyUser = async (
 ): Promise<ApiResponse | undefined> => {
   try {
     const response = await axios.post(
-      `${API_URL}/verifyuser`,
+      `${USER_API_URL}/verifyuser`,
       verificationData
     );
     return response.data;
@@ -66,7 +66,10 @@ export const resetPassword = async (
   userEmail: object
 ): Promise<ApiResponse | undefined> => {
   try {
-    const response = await axios.post(`${API_URL}/reset-password`, userEmail);
+    const response = await axios.post(
+      `${USER_API_URL}/reset-password`,
+      userEmail
+    );
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -81,7 +84,10 @@ export const newPasswordReset = async (
   resetData: object
 ): Promise<ApiResponse | undefined> => {
   try {
-    const response = await axios.post(`${API_URL}/new-Password`, resetData);
+    const response = await axios.post(
+      `${USER_API_URL}/new-Password`,
+      resetData
+    );
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -96,13 +102,27 @@ export const loginUser = async (
   formData: object
 ): Promise<ApiResponse | undefined> => {
   try {
-    console.log(formData);
-    const response = await axios.post(`${API_URL}/login`, formData);
+    const response = await axios.post(`${USER_API_URL}/login`, formData);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
       return errorResponse(error.message);
+    }
+  }
+};
+
+// get user
+export const getUser = async (): Promise<ApiResponse | undefined> => {
+  try {
+    const response = await axios.get(USER_API_URL, {
+      headers: { Authorization: sessionStorage.getItem("accessJWT") || "" },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+      return undefined;
     }
   }
 };
