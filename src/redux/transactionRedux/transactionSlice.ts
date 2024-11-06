@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TransactionInput } from "./transactionTypes";
-import { addTransactionAction } from "./transactionThunk";
+import { getTransactionAction } from "./transactionThunk";
 
 interface InitialState {
   transactions: TransactionInput[];
@@ -20,16 +20,16 @@ const transactionSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(addTransactionAction.pending, (state) => {
+      .addCase(getTransactionAction.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(addTransactionAction.fulfilled, (state, action) => {
+      .addCase(getTransactionAction.fulfilled, (state, action) => {
         state.loading = false;
         state.transactions = action.payload;
         state.error = null;
       })
-      .addCase(addTransactionAction.rejected, (state, action) => {
+      .addCase(getTransactionAction.rejected, (state, action) => {
         state.loading = false;
         state.error =
           action.error.message || "Failed to fetch transaction data.";

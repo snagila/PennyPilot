@@ -1,5 +1,5 @@
 body {
-  color: whitesmoke;
+  color: whitesmoke !important;
   background: radial-gradient(
     circle,
     rgba(44, 62, 80, 1) 10%,
@@ -7,7 +7,13 @@ body {
   );
   /* background: #efe9e3; */
 }
-
+.dark-background {
+  background: radial-gradient(
+    circle,
+    rgba(44, 62, 80, 1) 10%,
+    rgba(0, 0, 0, 1) 100%
+  ) !important;
+}
 .no-linkeffect {
   /* text-decoration: none; */
   display: inline;
@@ -16,4 +22,12 @@ body {
 .form-control.custom-placeholder::placeholder {
   color: #b0b0b0;
   opacity: 1;
+}
+@media (max-width: 576px) {
+  .pop {
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+    position: fixed;
+  }
 }

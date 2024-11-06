@@ -19,6 +19,7 @@ const TransactionForm: FC<TransactionFormProps> = ({ loading }) => {
   const dispatch = useDispatch<AppDispatch>();
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<TransactionFormData>();
@@ -27,6 +28,9 @@ const TransactionForm: FC<TransactionFormProps> = ({ loading }) => {
     formData
   ): Promise<void> => {
     dispatch(addTransactionAction(formData));
+    if (!loading) {
+      reset();
+    }
   };
   return (
     <>

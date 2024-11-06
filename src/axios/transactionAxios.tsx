@@ -21,7 +21,7 @@ const TRANSACTION_API_URL =
   `${import.meta.env.VITE_APP_API_URL}/transaction` ||
   `http://localhost:8001/transaction`;
 
-const token = sessionStorage.getItem("accessJWT");
+// add new transaction
 export const addNewTransaction = async (
   transactionData: TransactionInput
 ): Promise<ApiResponse | undefined> => {
@@ -30,9 +30,26 @@ export const addNewTransaction = async (
       `${TRANSACTION_API_URL}/addtransaction`,
       transactionData,
       {
-        headers: { Authorization: token },
+        headers: { Authorization: sessionStorage.getItem("accessJWT") },
       }
     );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error);
+      return errorResponse(error.message);
+    }
+  }
+};
+
+// get all transactions
+export const getAllTransactions = async (): Promise<
+  ApiResponse | undefined
+> => {
+  try {
+    const response = await axios.get(TRANSACTION_API_URL, {
+      headers: { Authorization: sessionStorage.getItem("accessJWT") },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof Error) {

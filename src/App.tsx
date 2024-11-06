@@ -15,15 +15,19 @@ import { AppDispatch, RootState } from "./redux/store";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getUserDataAction } from "./redux/userRedux/userThunk";
+import { getTransactionAction } from "./redux/transactionRedux/transactionThunk";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
   const { user, loading } = useSelector((state: RootState) => state.user);
   useEffect(() => {
-    if (user) {
-      dispatch(getUserDataAction());
+    dispatch(getUserDataAction());
+  }, []);
+  useEffect(() => {
+    if (user?._id) {
+      dispatch(getTransactionAction());
     }
-  }, [dispatch]);
+  }, [user]);
 
   return (
     <>
