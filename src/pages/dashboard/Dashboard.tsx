@@ -7,44 +7,41 @@ import { RootState } from "../../redux/store";
 import PieChartData from "../../components/dashboard/PieChart";
 import { BsArrowDownCircleFill, BsArrowUpCircleFill } from "react-icons/bs";
 import ModalForm from "../../components/dashboard/ModalForm";
+import TransactionsDisplay from "../../components/dashboard/TransactionsDisplay";
+import Footer from "../../components/dashboard/Footer";
 
 const Dashboard: FC = () => {
   const { transactions, loading } = useSelector(
     (state: RootState) => state.transaction
   );
 
-  const expenseData = transactions
-    ?.filter((item) => item.type === "expense")
-    .reduce((acc, curr) => acc + curr.amount, 0);
+  const exprenseTransactions = transactions?.filter(
+    (item) => item.type === "expense"
+  );
+  const expenseData = exprenseTransactions?.reduce(
+    (acc, curr) => acc + curr.amount,
+    0
+  );
+  const incomeTransactions = transactions?.filter(
+    (item) => item.type === "income"
+  );
+  const incomeData = incomeTransactions?.reduce(
+    (acc, curr) => acc + curr.amount,
+    0
+  );
 
-  const incomeData = transactions
-    ?.filter((item) => item.type === "income")
-    .reduce((acc, curr) => acc + curr.amount, 0);
-
+  const totalbalance = incomeData - expenseData;
   return (
     <>
       <NabBar />
-      <Container>
-        {/* <Row>
-          <Col>
-            <Row>
-              {" "}
-              <Col className="d-dlex justify-content-center align-items-center">
-                <PieChartData
-                  expenseData={expenseData}
-                  incomeData={incomeData}
-                />
-              </Col>
-              <Col>hello</Col>
-            </Row>
-          </Col>
-          <Col>
-            <TransactionForm loading={loading} />
-          </Col>
-        </Row> */}
-
-        <Row className="p-2">
-          <Col xs={12} md={7} lg={7} className="chart shadow-lg rounded p-3  ">
+      <Container fluid className="mb-3">
+        <Row className="p-2 mt-5">
+          <Col
+            xs={12}
+            md={7}
+            lg={7}
+            className="chart box-shadow-lg rounded p-3  "
+          >
             <Row>
               <Col xs={12} md={7} lg={5}>
                 <PieChartData
@@ -96,7 +93,23 @@ const Dashboard: FC = () => {
           </Col>
         </Row>
         <ModalForm />
+        <Row className="box-shadow-lg mt-4">
+          <Col xs={12} className=" text-center p-4">
+            Available Balance :{" "}
+            {totalbalance > 0 ? (
+              <span className="fw-bold text-success">${totalbalance}</span>
+            ) : (
+              <span className="fw-bold text-danger">${totalbalance}</span>
+            )}
+          </Col>
+        </Row>
+        <TransactionsDisplay
+          exprenseTransactions={exprenseTransactions}
+          incomeTransactions={incomeTransactions}
+          allTransactions={transactions}
+        />
       </Container>
+      <Footer />
     </>
   );
 };

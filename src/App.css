@@ -18,10 +18,38 @@ body {
   /* text-decoration: none; */
   display: inline;
 }
+.box-shadow-lg {
+  box-shadow: 0 0.125rem 0.25rem rgba(255, 253, 253, 0.175);
+}
 
 .form-control.custom-placeholder::placeholder {
   color: #b0b0b0;
   opacity: 1;
+}
+.flex-item {
+  flex-basis: 50%;
+}
+
+.transaction-Table {
+  height: 50vh;
+  overflow: auto;
+}
+
+.transaction-Table::-webkit-scrollbar {
+  width: 8px;
+}
+
+.transaction-Table::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.transaction-Table::-webkit-scrollbar-track {
+  background-color: radial-gradient(
+    circle,
+    rgba(44, 62, 80, 1) 10%,
+    rgba(0, 0, 0, 1) 100%
+  );
 }
 @media (max-width: 576px) {
   .pop {

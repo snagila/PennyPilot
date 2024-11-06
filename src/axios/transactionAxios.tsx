@@ -58,3 +58,21 @@ export const getAllTransactions = async (): Promise<
     }
   }
 };
+
+// delete TransaActions
+export const deleteTransaction = async (
+  idToDelete: string[]
+): Promise<ApiResponse | undefined> => {
+  try {
+    const response = await axios.delete(TRANSACTION_API_URL, {
+      headers: { Authorization: sessionStorage.getItem("accessJWT") },
+      data: idToDelete,
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error);
+      return errorResponse(error.message);
+    }
+  }
+};

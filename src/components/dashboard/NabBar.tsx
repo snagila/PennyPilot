@@ -14,7 +14,7 @@ const NabBar: FC = () => {
   };
   return (
     <>
-      <Navbar style={{ background: "red" }}>
+      <Navbar className="box-shadow-lg">
         <Container>
           <Navbar.Brand href="#home" style={{ color: "whitesmoke" }}>
             {user?.firstName} {user?.lastName}
