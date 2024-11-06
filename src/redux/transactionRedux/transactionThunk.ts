@@ -23,12 +23,27 @@ export const getTransactionAction = createAsyncThunk<TransactionInput[], void>(
   }
 );
 
-export const deleteTransactionsAction = createAsyncThunk<void, string[]>(
+export const deleteTransactionsAction = createAsyncThunk<
+  void,
+  string[],
+  { rejectValue: { message: string } }
+>(
   "transaction/deleteTransActions",
-  async (ids, { dispatch }) => {
-    const result = await deleteTransaction(ids);
-    if (result?.status === "success") {
-      dispatch(getTransactionAction());
+  async (ids, { dispatch, rejectWithValue }) => {
+    try {
+      const result = await deleteTransaction(ids);
+      if (result?.status === "success") {
+        dispatch(getTransactionAction());
+      } else {
+        return rejectWithValue({
+          message: result?.message || "Failed to delete transactions",
+        });
+      }
+      return;
+    } catch (error) {
+      return rejectWithValue({
+        message: error instanceof Error ? error.message : "Unknown error",
+      });
     }
   }
 );

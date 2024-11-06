@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TransactionInput } from "./transactionTypes";
-import { getTransactionAction } from "./transactionThunk";
+import {
+  deleteTransactionsAction,
+  getTransactionAction,
+} from "./transactionThunk";
 
 interface InitialState {
   transactions: TransactionInput[];
@@ -19,6 +22,7 @@ const transactionSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    // getting all transaction
     builder
       .addCase(getTransactionAction.pending, (state) => {
         state.loading = true;
@@ -33,6 +37,22 @@ const transactionSlice = createSlice({
         state.loading = false;
         state.error =
           action.error.message || "Failed to fetch transaction data.";
+      });
+
+    // delete Transactions
+    builder
+      .addCase(deleteTransactionsAction.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteTransactionsAction.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteTransactionsAction.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error?.message || "Failed to delete transaction data.";
       });
   },
 });

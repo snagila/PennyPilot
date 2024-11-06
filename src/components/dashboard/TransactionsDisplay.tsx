@@ -1,17 +1,18 @@
 import { FC } from "react";
 import { useEffect, useState } from "react";
-import { Button, ButtonGroup, Col, Row } from "react-bootstrap";
-import { GiSevenPointedStar } from "react-icons/gi";
+import { Alert, Button, ButtonGroup, Col, Row, Spinner } from "react-bootstrap";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import EachTransaction, { TransactionItem } from "./EachTransaction";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
 import { deleteTransactionsAction } from "../../redux/transactionRedux/transactionThunk";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import LineCharts, { Transaction } from "./LineChart";
 
 interface TransactionsDisplayProps {
-  exprenseTransactions: object[];
-  incomeTransactions: object[];
-  allTransactions: object[];
+  exprenseTransactions: Transaction[];
+  incomeTransactions: Transaction[];
+  allTransactions: Transaction[];
 }
 const TransactionsDisplay: FC<TransactionsDisplayProps> = ({
   exprenseTransactions,
@@ -24,6 +25,9 @@ const TransactionsDisplay: FC<TransactionsDisplayProps> = ({
   const [list, setlist] = useState<object[]>([]);
   const [idToDelete, setIdToDelete] = useState<string[]>([]);
 
+  const { loading, error } = useSelector(
+    (state: RootState) => state.transaction
+  );
   const handleBtnClick = (item: string) => {
     setButton(item);
     if (item === "Income") {
@@ -35,10 +39,11 @@ const TransactionsDisplay: FC<TransactionsDisplayProps> = ({
     }
   };
 
-  const handleOnDelete = async () => {
-    const result = await dispatch(deleteTransactionsAction(idToDelete));
-
-    // setIdToDelete([]);
+  const handleOnDelete = () => {
+    dispatch(deleteTransactionsAction(idToDelete));
+    if (loading === false) {
+      setIdToDelete([]);
+    }
   };
   useEffect(() => {
     setlist([...allTransactions]);
@@ -66,19 +71,23 @@ const TransactionsDisplay: FC<TransactionsDisplayProps> = ({
                 );
               })}
             </ButtonGroup>
-            {idToDelete?.length > 0 && (
-              <RiDeleteBin6Line
-                color="red"
-                className="fs-4"
-                role="button"
-                onClick={handleOnDelete}
-              />
-            )}
+            {idToDelete?.length > 0 &&
+              (loading ? (
+                <Spinner animation="border" />
+              ) : (
+                <RiDeleteBin6Line
+                  color="red"
+                  className="fs-4"
+                  role="button"
+                  onClick={handleOnDelete}
+                />
+              ))}
+            {error && <Alert variant="danger">{error}</Alert>}
           </div>
         </Col>
       </Row>
-      <Row>
-        <Col xs={12} md={8} lg={8} className="p-4 transaction-Table">
+      <Row className="">
+        <Col xs={12} md={8} lg={8} className=" transaction-Table">
           {list?.map((item, i) => {
             return (
               <EachTransaction
@@ -90,18 +99,8 @@ const TransactionsDisplay: FC<TransactionsDisplayProps> = ({
             );
           })}
         </Col>
-        <Col xs={12} md={4} lg={4} className="">
-          <div className="box-shadow-lg  p-3">
-            <p className="fw-bold">Budget Rules</p>
-            <p>
-              <GiSevenPointedStar /> The art is not in making money, but in
-              keeping it.
-            </p>
-            <p>
-              <GiSevenPointedStar /> It's not your salary that makes you rich,
-              it's your spending habits.
-            </p>
-          </div>
+        <Col xs={12} md={4} lg={4} className="pt-4">
+          <LineCharts allTransactions={allTransactions} />
         </Col>
       </Row>
     </>
