@@ -28,6 +28,8 @@ const TransactionsDisplay: FC<TransactionsDisplayProps> = ({
   const { loading, error } = useSelector(
     (state: RootState) => state.transaction
   );
+
+  // const sortedAllTransactions = allTransactions.sort((a, b) => );
   const handleBtnClick = (item: string) => {
     setButton(item);
     if (item === "Income") {

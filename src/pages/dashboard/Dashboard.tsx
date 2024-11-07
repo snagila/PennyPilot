@@ -15,6 +15,12 @@ const Dashboard: FC = () => {
     (state: RootState) => state.transaction
   );
 
+  const sortedTransactions = [...transactions].sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB.getTime() - dateA.getTime();
+  });
+
   const exprenseTransactions = transactions?.filter(
     (item) => item.type === "expense"
   );
@@ -120,7 +126,7 @@ const Dashboard: FC = () => {
         <TransactionsDisplay
           exprenseTransactions={exprenseTransactions}
           incomeTransactions={incomeTransactions}
-          allTransactions={transactions}
+          allTransactions={sortedTransactions}
         />
       </Container>
       <Footer />
