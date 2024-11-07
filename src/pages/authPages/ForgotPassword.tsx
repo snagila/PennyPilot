@@ -45,6 +45,7 @@ const ForgotPassword = () => {
           <Image
             src="https://images.unsplash.com/photo-1726074268663-5d6bafae5120?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Zm9yZ290fGVufDB8fDB8fHww"
             className="img-fluid h-100"
+            style={{ width: "100%" }}
           />
         </Col>
         <Col className="d-flex justify-content-center align-items-center flex-column p-4 ">

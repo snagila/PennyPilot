@@ -86,23 +86,35 @@ const TransactionsDisplay: FC<TransactionsDisplayProps> = ({
           </div>
         </Col>
       </Row>
-      <Row className="">
-        <Col xs={12} md={8} lg={8} className=" transaction-Table">
-          {list?.map((item, i) => {
-            return (
-              <EachTransaction
-                key={i}
-                setIdToDelete={setIdToDelete}
-                idToDelete={idToDelete}
-                item={item as TransactionItem}
-              />
-            );
-          })}
-        </Col>
-        <Col xs={12} md={4} lg={4} className="pt-4">
-          <LineCharts allTransactions={allTransactions} />
-        </Col>
-      </Row>
+
+      {list.length === 0 ? (
+        <Row
+          style={{ height: "35vh" }}
+          className="justify-content-center align-items-center text-danger"
+        >
+          No transactions found !!!
+        </Row>
+      ) : (
+        <Row className="">
+          <Col xs={12} md={8} lg={8} className=" transaction-Table">
+            {list?.map((item, i) => {
+              return (
+                item && (
+                  <EachTransaction
+                    key={i}
+                    setIdToDelete={setIdToDelete}
+                    idToDelete={idToDelete}
+                    item={item as TransactionItem}
+                  />
+                )
+              );
+            })}
+          </Col>
+          <Col xs={12} md={4} lg={4} className="pt-4">
+            <LineCharts allTransactions={allTransactions} />
+          </Col>
+        </Row>
+      )}
     </>
   );
 };

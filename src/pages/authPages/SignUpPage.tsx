@@ -7,7 +7,6 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import SignupPic from "../../assets/signup.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "./authPage.css";
 import { signUpUser } from "../../axios/authAxios";
@@ -25,8 +24,6 @@ const SignUpPage = () => {
     formState: { errors, isSubmitting },
   } = useForm<SignupFormData>();
   const [conformPassword, setConformPassword] = useState<string>("");
-
-  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<SignupFormData> = async (
     data
@@ -50,11 +47,12 @@ const SignUpPage = () => {
 
   return (
     <>
-      <Row className="min-vh-100 gap-1">
+      <Row className=" gap-1" style={{ maxHeight: "100vh" }}>
         <Col xs={12} md={6}>
-          <div style={{ width: "100%", height: "100%" }}>
+          <div style={{ width: "100%", height: "100vh" }}>
             <LazyLoadImage
-              src={SignupPic}
+              // src={SignupPic}
+              src="https://plus.unsplash.com/premium_photo-1680363254554-d1c63ad8d33d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fG1vbmV5fGVufDB8fDB8fHww"
               effect="blur"
               height="100%"
               width="100%"

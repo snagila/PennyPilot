@@ -57,7 +57,6 @@ const LineCharts: FC<LineChartsProps> = ({ allTransactions }) => {
 
     return dateB.getTime() - dateA.getTime();
   });
-  console.log(sortedbydateData);
 
   const [opacity, setOpacity] = React.useState({
     expense: 1,
@@ -77,43 +76,45 @@ const LineCharts: FC<LineChartsProps> = ({ allTransactions }) => {
   };
 
   return (
-    <div style={{ width: "100%", color: "red" }}>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart
-          width={500}
-          height={300}
-          data={sortedbydateData}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          />
-          <Line
-            type="monotone"
-            dataKey="income"
-            strokeOpacity={opacity.income}
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="expense"
-            strokeOpacity={opacity.expense}
-            stroke="#FFC532"
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
+    <>
+      {sortedbydateData.length > 0 && (
+        <ResponsiveContainer width="100%" height={300} style={{ color: "red" }}>
+          <LineChart
+            width={500}
+            height={300}
+            data={sortedbydateData}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            />
+            <Line
+              type="monotone"
+              dataKey="income"
+              strokeOpacity={opacity.income}
+              stroke="#8884d8"
+              activeDot={{ r: 8 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="expense"
+              strokeOpacity={opacity.expense}
+              stroke="#FFC532"
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      )}
+    </>
   );
 };
 

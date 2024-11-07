@@ -30,7 +30,9 @@ const VerifyEmail = () => {
   };
 
   useEffect(() => {
-    verifyUserEmail();
+    if (userEmail && sessionToken) {
+      verifyUserEmail();
+    }
   }, [userEmail]);
   return (
     <>

@@ -1,5 +1,4 @@
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
-import loginPic from "../../assets/loginPic.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -27,7 +26,7 @@ const LoginPage: React.FC = () => {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     defaultValues: {
-      email: "aa@gmail.com",
+      email: "sachinnagila2053@gmail.com",
       password: "aa",
     },
   });
@@ -67,28 +66,23 @@ const LoginPage: React.FC = () => {
           {/* https://blog.webdevsimplified.com/2023-05/lazy-load-images/ */}
           <div style={{ width: "100%", height: "100%" }}>
             <LazyLoadImage
-              src={loginPic}
+              // src={loginPic}
+              src="https://images.unsplash.com/photo-1593672715438-d88a70629abe?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bW9uZXl8ZW58MHx8MHx8fDA%3D"
               effect="blur"
               height="100%"
               width="100%"
               alt="Login background"
               placeholder={
                 <img
-                  src={loginPic}
+                  src="https://images.unsplash.com/photo-1593672715438-d88a70629abe?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bW9uZXl8ZW58MHx8MHx8fDA%3D"
                   alt="Placeholder"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               }
             />
           </div>
-
-          {/* <Image
-            src={loginPic}
-            className="img-fluid h-100"
-            // onLoad={() => setImageLoaded(true)}
-            loading="lazy"
-          /> */}
         </Col>
+
         <Col className="d-flex justify-content-center align-items-center flex-column p-4 ">
           <Container>
             <Row className="">

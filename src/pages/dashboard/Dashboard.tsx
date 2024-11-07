@@ -42,43 +42,57 @@ const Dashboard: FC = () => {
             lg={7}
             className="chart box-shadow-lg rounded p-3  "
           >
-            <Row>
-              <Col xs={12} md={7} lg={5}>
-                <PieChartData
-                  expenseData={expenseData}
-                  incomeData={incomeData}
-                />
-              </Col>
-              <Col
-                xs={12}
-                md={5}
-                lg={7}
-                className="d-grid align-items-center mt-4 "
+            {!expenseData && !incomeData && (
+              <div
+                style={{ height: "100%", width: "100%" }}
+                className="d-flex justify-content-center align-items-center fs-3 text-info"
               >
-                <Row>
-                  <Row className="justify-content-center pb-4">
-                    Your Transaction Summery
-                  </Row>
-                  <Row className="justify-content-between pt-2 m-0 p-0">
-                    <Col className="d-flex gap-3 align-items-center">
-                      <BsArrowDownCircleFill className="fs-3" color="#936ee3" />
+                Please add data to get started
+              </div>
+            )}
 
-                      <div>
-                        <p className=" p-0 m-0 fw-bold">${incomeData}</p>
-                        <p className="p-0 m-0">Income</p>
-                      </div>
-                    </Col>
-                    <Col className="d-flex gap-3 align-items-center">
-                      <BsArrowUpCircleFill className="fs-3" color="#ffc532" />
-                      <div>
-                        <p className="p-0 m-0 fw-bold">${expenseData}</p>
-                        <p className="  p-0 m-0">Expense</p>
-                      </div>
-                    </Col>
+            {(expenseData > 0 || incomeData > 0) && (
+              <Row>
+                <Col xs={12} md={7} lg={5}>
+                  <PieChartData
+                    expenseData={expenseData}
+                    incomeData={incomeData}
+                  />
+                </Col>
+                <Col
+                  xs={12}
+                  md={5}
+                  lg={7}
+                  className="d-grid align-items-center mt-4 "
+                >
+                  <Row>
+                    <Row className="justify-content-center pb-4">
+                      Your Transaction Summery
+                    </Row>
+                    <Row className="justify-content-between pt-2 m-0 p-0">
+                      <Col className="d-flex gap-3 align-items-center">
+                        <BsArrowDownCircleFill
+                          className="fs-3"
+                          color="#936ee3"
+                        />
+
+                        <div>
+                          <p className=" p-0 m-0 fw-bold">${incomeData}</p>
+                          <p className="p-0 m-0">Income</p>
+                        </div>
+                      </Col>
+                      <Col className="d-flex gap-3 align-items-center">
+                        <BsArrowUpCircleFill className="fs-3" color="#ffc532" />
+                        <div>
+                          <p className="p-0 m-0 fw-bold">${expenseData}</p>
+                          <p className="  p-0 m-0">Expense</p>
+                        </div>
+                      </Col>
+                    </Row>
                   </Row>
-                </Row>
-              </Col>
-            </Row>
+                </Col>
+              </Row>
+            )}
           </Col>
 
           <Col

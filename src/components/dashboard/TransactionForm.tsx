@@ -9,7 +9,7 @@ type TransactionFormData = {
   type: string;
   description: string;
   amount: number;
-  date: Date;
+  date: string;
 };
 
 interface TransactionFormProps {
@@ -61,11 +61,22 @@ const TransactionForm: FC<TransactionFormProps> = ({ loading }) => {
           <Form.Control
             placeholder="Description"
             type="text"
-            className="bg-dark text-light border-0  custom-placeholder"
+            minLength={3}
+            maxLength={15}
+            className="bg-dark text-light border-0 custom-placeholder"
             {...register("description", {
               required: "Description is required",
+              minLength: {
+                value: 3,
+                message: "Description must be at least 3 characters",
+              },
+              maxLength: {
+                value: 15,
+                message: "Description cannot exceed 15 characters",
+              },
             })}
           />
+
           {errors.description && (
             <div className="text-danger">{errors.description.message}</div>
           )}
